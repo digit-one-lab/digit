@@ -11,7 +11,7 @@ export async function GET(context: { site: URL }) {
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.date,
-      link: `/posts/${entrySlug(post)}/`
+      link: `/articles/${entrySlug(post)}/`
     }))
   });
 }
