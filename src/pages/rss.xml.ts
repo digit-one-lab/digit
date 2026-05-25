@@ -1,7 +1,7 @@
 import rss from '@astrojs/rss';
-import { getPosts } from '../lib/content';
+import { getPosts, entrySlug } from '../lib/content';
 
-export async function GET(context) {
+export async function GET(context: { site: URL }) {
   const posts = await getPosts();
   return rss({
     title: 'Digit',
@@ -11,7 +11,7 @@ export async function GET(context) {
       title: post.data.title,
       description: post.data.description,
       pubDate: post.data.date,
-      link: `/posts/${post.slug}/`
+      link: `/posts/${entrySlug(post)}/`
     }))
   });
 }
