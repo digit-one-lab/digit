@@ -1,4 +1,4 @@
-import { getPosts } from '../lib/content';
+import { getPosts, entrySlug } from '../lib/content';
 
 export async function GET() {
   const posts = await getPosts();
@@ -7,6 +7,6 @@ export async function GET() {
     description: post.data.description,
     tags: post.data.tags,
     category: post.data.category,
-    url: `${import.meta.env.BASE_URL}posts/${post.slug}/`
+    url: `${import.meta.env.BASE_URL}posts/${entrySlug(post)}/`
   }))), { headers: { 'Content-Type': 'application/json' } });
 }
