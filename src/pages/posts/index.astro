@@ -4,9 +4,9 @@ import PostCard from '../../components/PostCard.astro';
 import { getPosts } from '../../lib/content';
 const posts = await getPosts();
 ---
-<BaseLayout title="Articles" description="All published essays, notes, updates, and long-form articles.">
+<BaseLayout title="Posts" description="All published posts, notes, updates, and long-form writing.">
   <section class="shell section">
-    <div class="section-head"><h2>Articles</h2><p>{posts.length} published pieces</p></div>
+    <div class="section-head"><h2>Posts</h2><p>{posts.length} posts</p></div>
     <div class="grid posts">{posts.map((post) => <PostCard post={post} />)}</div>
   </section>
 </BaseLayout>
