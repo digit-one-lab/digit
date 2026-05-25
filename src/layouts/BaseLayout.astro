@@ -19,11 +19,14 @@ const pageTitle = title === 'Digit' ? title : `${title} · Digit`;
     </script>
   </head>
   <body>
+    <div class="unsplash-bg" aria-hidden="true"></div>
+    <div class="liquid-orb orb-a" aria-hidden="true"></div>
+    <div class="liquid-orb orb-b" aria-hidden="true"></div>
     <header class="site-header">
       <nav class="shell nav">
         <a class="brand" href={`${import.meta.env.BASE_URL}`}>Digit<span>.</span></a>
         <div class="links">
-          <a href={`${import.meta.env.BASE_URL}articles/`}>Articles</a>
+          <a href={`${import.meta.env.BASE_URL}posts/`}>Posts</a>
           <a href={`${import.meta.env.BASE_URL}projects/`}>Projects</a>
           <a href={`${import.meta.env.BASE_URL}search/`}>Search</a>
           <a href={`${import.meta.env.BASE_URL}about/`}>About</a>
@@ -36,6 +39,15 @@ const pageTitle = title === 'Digit' ? title : `${title} · Digit`;
       <div class="shell">© {new Date().getFullYear()} Digit.</div>
     </footer>
     <script is:inline>
+      const collection = '9995415';
+      const bg = document.querySelector('.unsplash-bg');
+      const setUnsplashBackground = () => {
+        const minute = Math.floor(Date.now() / 60000);
+        const url = `https://source.unsplash.com/collection/${collection}/2400x1600?sig=${minute}`;
+        if (bg) bg.style.backgroundImage = `url("${url}"), radial-gradient(circle at 20% 20%, rgba(91,141,255,.28), transparent 34rem), linear-gradient(135deg, #eef3fb, #f9fbff)`;
+      };
+      setUnsplashBackground();
+      setInterval(setUnsplashBackground, 60000);
       document.getElementById('theme-toggle')?.addEventListener('click', () => {
         const html = document.documentElement;
         const next = !html.classList.contains('dark');
