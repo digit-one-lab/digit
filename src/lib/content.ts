@@ -10,6 +10,14 @@ export async function getProjects() {
   return projects.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 }
 
+export function entrySlug(entry: { id: string }) {
+  return entry.id.replace(/\.(md|mdx)$/, '');
+}
+
+export function tagSlug(value: string) {
+  return value.toLowerCase().replaceAll(' ', '-');
+}
+
 export function readingTime(body = '') {
   const words = body.trim().split(/\s+/).filter(Boolean).length;
   return Math.max(1, Math.ceil(words / 220));
