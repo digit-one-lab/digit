@@ -1,0 +1,13 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getPosts, formatDate } from '../lib/content';
+const posts = await getPosts();
+---
+<BaseLayout title="Archive" description="Chronological archive of all articles.">
+  <section class="shell section">
+    <div class="section-head"><h2>Archive</h2><p>Chronological index</p></div>
+    <div class="grid">
+      {posts.map((post) => <a class="card" href={`${import.meta.env.BASE_URL}posts/${post.slug}/`}><div class="meta"><span>{formatDate(post.data.date)}</span><span>·</span><span>{post.data.category}</span></div><h3>{post.data.title}</h3><p>{post.data.description}</p></a>)}
+    </div>
+  </section>
+</BaseLayout>
