@@ -1,12 +1,40 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PostCard from '../../components/PostCard.astro';
-import { getPosts } from '../../lib/content';
+import { getPosts, formatDate, readingTime, entrySlug } from '../../lib/content';
 const posts = await getPosts();
+const fallbackPosts = [
+  { title: 'Liquid Glass Notes', description: 'A placeholder post exploring translucent interfaces, depth, motion, and modern publishing surfaces.', date: 'May 22, 2026', url: 'liquid-glass-notes' },
+  { title: 'Field Notes from a Digital Garden', description: 'A placeholder post about collecting small ideas and turning them into a living knowledge system.', date: 'May 21, 2026', url: 'field-notes-from-a-digital-garden' },
+  { title: 'Quiet Systems, Loud Interfaces', description: 'A placeholder post about designing systems that stay calm while the interface remains memorable.', date: 'May 20, 2026', url: 'quiet-systems-loud-interfaces' }
+];
 ---
 <BaseLayout title="Posts" description="All published posts, notes, updates, and long-form writing.">
   <section class="shell section">
-    <div class="section-head"><h2>Posts</h2><p>{posts.length} posts</p></div>
-    <div class="grid posts">{posts.map((post) => <PostCard post={post} />)}</div>
+    <div class="section-head"><h2>Posts</h2><p>{posts.length > 0 ? `${posts.length} posts` : 'Example posts'}</p></div>
+    {posts.length > 0 ? (
+      <div class="grid posts">
+        {posts.map((post) => (
+          <a class="card" href={`${import.meta.env.BASE_URL}posts/${entrySlug(post)}/`}>
+            <div class="cover"></div>
+            <div class="meta"><span>{formatDate(post.data.date)}</span><span>·</span><span>{readingTime(post.body)} min read</span></div>
+            <h3>{post.data.title}</h3>
+            <p>{post.data.description}</p>
+            <div class="meta">{post.data.tags.slice(0, 3).map((tag: string) => <span class="tag">{tag}</span>)}</div>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <div class="grid posts">
+        {fallbackPosts.map((post) => (
+          <a class="card" href={`${import.meta.env.BASE_URL}posts/${post.url}/`}>
+            <div class="cover"></div>
+            <div class="meta"><span>{post.date}</span><span>·</span><span>2 min read</span></div>
+            <h3>{post.title}</h3>
+            <p>{post.description}</p>
+            <div class="meta"><span class="tag">Placeholder</span><span class="tag">Design</span></div>
+          </a>
+        ))}
+      </div>
+    )}
   </section>
 </BaseLayout>
