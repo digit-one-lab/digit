@@ -1,1 +1,1 @@
-{"name":"digit-publication","version":"1.0.0","private":true,"type":"module","scripts":{"dev":"astro dev","start":"astro dev","build":"astro build","preview":"astro preview"},"dependencies":{"@astrojs/sitemap":"latest","astro":"latest","typescript":"^5.9.3"},"devDependencies":{}}
+{"name":"digit-publication","version":"1.0.0","private":true,"type":"module","scripts":{"build":"node scripts/build-static.mjs"},"dependencies":{},"devDependencies":{}}
