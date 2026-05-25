@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getPosts, getProjects } from '../lib/content';
+const posts = await getPosts();
+const featured = posts.filter((post) => post.data.featured).slice(0, 3);
+const projects = (await getProjects()).slice(0, 1);
+---
+<BaseLayout>
+  <section class="shell hero">
+    <div>
+      <div class="eyebrow">Personal publication · knowledge base · project log</div>
+      <h1>Ideas, systems, projects, and durable notes.</h1>
+      <p class="lead">A polished static publishing platform built for long-form writing, fast discovery, and future GPT-assisted Markdown publishing.</p>
+    </div>
+    <aside class="panel">
+      <strong>Publishing workflow</strong>
+      <p>Drop a Markdown or MDX file into <code>src/content/posts</code>, fill the frontmatter, commit, and GitHub Pages deploys the site.</p>
+      <a class="button" href={`${import.meta.env.BASE_URL}posts/`}>Read articles</a>
+    </aside>
+  </section>
+  <section class="shell section">
+    <div class="section-head"><h2>Featured posts</h2><a class="tag" href={`${import.meta.env.BASE_URL}archive/`}>Archive</a></div>
+    <div class="grid posts">{featured.map((post) => <PostCard post={post} />)}</div>
+  </section>
+  <section class="shell section">
+    <div class="panel newsletter">
+      <div><h2>Newsletter placeholder</h2><p class="lead">No backend is connected. Replace this with your future email provider when needed.</p></div>
+      <form><input placeholder="email@example.com" /><button type="button">Notify me</button></form>
+    </div>
+  </section>
+  <section class="shell section">
+    <div class="section-head"><h2>Project spotlight</h2><a class="tag" href={`${import.meta.env.BASE_URL}projects/`}>Projects</a></div>
+    {projects.map((project) => <a class="card" href={`${import.meta.env.BASE_URL}projects/${project.slug}/`}><div class="cover"></div><div class="meta"><span>{project.data.status}</span></div><h3>{project.data.title}</h3><p>{project.data.description}</p></a>)}
+  </section>
+</BaseLayout>
