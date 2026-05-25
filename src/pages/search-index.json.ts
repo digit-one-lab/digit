@@ -7,6 +7,6 @@ export async function GET() {
     description: post.data.description,
     tags: post.data.tags,
     category: post.data.category,
-    url: `${import.meta.env.BASE_URL}articles/${entrySlug(post)}/`
+    url: `${import.meta.env.BASE_URL}posts/${entrySlug(post)}/`
   }))), { headers: { 'Content-Type': 'application/json' } });
 }
