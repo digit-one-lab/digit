@@ -5,13 +5,18 @@ import { getPosts, getProjects, entrySlug } from '../lib/content';
 const posts = await getPosts();
 const latestPosts = posts.slice(0, 6);
 const projects = (await getProjects()).slice(0, 1);
+const fallbackPosts = [
+  { title: 'Liquid Glass Notes', description: 'A placeholder post exploring translucent interfaces, depth, motion, and modern publishing surfaces.', date: 'May 22, 2026', url: 'liquid-glass-notes' },
+  { title: 'Field Notes from a Digital Garden', description: 'A placeholder post about collecting small ideas and turning them into a living knowledge system.', date: 'May 21, 2026', url: 'field-notes-from-a-digital-garden' },
+  { title: 'Quiet Systems, Loud Interfaces', description: 'A placeholder post about designing systems that stay calm while the interface remains memorable.', date: 'May 20, 2026', url: 'quiet-systems-loud-interfaces' }
+];
 ---
 <BaseLayout>
   <section class="shell hero">
     <div>
-      <div class="eyebrow">Personal publication · knowledge base · project log</div>
-      <h1>Ideas, systems, projects, and durable notes.</h1>
-      <p class="lead">A polished static publishing platform built for long-form writing, fast discovery, and future GPT-assisted Markdown publishing.</p>
+      <div class="eyebrow">Liquid Glass publication system</div>
+      <h1>Posts, projects, and notes in a glass-native interface.</h1>
+      <p class="lead">A static publishing space with soft depth, translucent surfaces, calm motion, and a consistent Apple-style glass material across every page.</p>
     </div>
     <aside class="panel">
       <strong>Publishing workflow</strong>
@@ -21,7 +26,21 @@ const projects = (await getProjects()).slice(0, 1);
   </section>
   <section class="shell section">
     <div class="section-head"><h2>Latest posts</h2><a class="tag" href={`${import.meta.env.BASE_URL}posts/`}>All posts</a></div>
-    <div class="grid posts">{latestPosts.map((post) => <PostCard post={post} />)}</div>
+    {latestPosts.length > 0 ? (
+      <div class="grid posts">{latestPosts.map((post) => <PostCard post={post} />)}</div>
+    ) : (
+      <div class="grid posts">
+        {fallbackPosts.map((post) => (
+          <a class="card" href={`${import.meta.env.BASE_URL}posts/${post.url}/`}>
+            <div class="cover"></div>
+            <div class="meta"><span>{post.date}</span><span>·</span><span>2 min read</span></div>
+            <h3>{post.title}</h3>
+            <p>{post.description}</p>
+            <div class="meta"><span class="tag">Placeholder</span><span class="tag">Design</span></div>
+          </a>
+        ))}
+      </div>
+    )}
   </section>
   <section class="shell section">
     <div class="panel newsletter">
