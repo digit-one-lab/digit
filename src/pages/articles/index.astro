@@ -1,12 +1,4 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PostCard from '../../components/PostCard.astro';
-import { getPosts } from '../../lib/content';
-const posts = await getPosts();
 ---
-<BaseLayout title="Articles" description="All published articles.">
-  <section class="shell section">
-    <div class="section-head"><h2>Articles</h2><p>{posts.length} posts</p></div>
-    <div class="grid posts">{posts.map((post) => <PostCard post={post} />)}</div>
-  </section>
-</BaseLayout>
+<BaseLayout title="Posts"><section class="shell section"><div class="section-head"><h2>Posts moved</h2></div><a class="button" href={`${import.meta.env.BASE_URL}posts/`}>Open posts</a></section></BaseLayout>

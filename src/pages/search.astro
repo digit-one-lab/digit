@@ -1,22 +1,4 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Search" description="Search posts by title, summary, tag, or category.">
-  <section class="shell section">
-    <div class="section-head"><h2>Search</h2><p>Static client-side search</p></div>
-    <input class="search" id="q" placeholder="Search articles, tags, categories..." />
-    <div class="grid" id="results" style="margin-top:22px"></div>
-  </section>
-  <script>
-    const input = document.getElementById('q') as HTMLInputElement;
-    const results = document.getElementById('results')!;
-    let data: any[] = [];
-    fetch(`${import.meta.env.BASE_URL}search-index.json`).then((r) => r.json()).then((json) => { data = json; render(''); });
-    function render(query: string) {
-      const q = query.toLowerCase();
-      const items = data.filter((item) => !q || [item.title, item.description, item.category, ...(item.tags || [])].join(' ').toLowerCase().includes(q));
-      results.innerHTML = items.map((item) => `<a class="card" href="${item.url}"><div class="meta"><span>${item.category}</span></div><h3>${item.title}</h3><p>${item.description}</p></a>`).join('') || '<p>No results.</p>';
-    }
-    input?.addEventListener('input', () => render(input.value));
-  </script>
-</BaseLayout>
+<BaseLayout title="Search" description="Search posts."><section class="shell section"><div class="section-head"><h2>Search</h2><p>Static search</p></div><input class="search" id="q" placeholder="Search posts..."/><div class="grid posts" id="results" style="margin-top:22px"></div></section><script is:inline>const posts=[['Liquid Glass Notes','A placeholder post exploring translucent interfaces.','posts/liquid-glass-notes/'],['Field Notes from a Digital Garden','A placeholder post about collecting small ideas.','posts/field-notes-from-a-digital-garden/'],['Quiet Systems, Loud Interfaces','A placeholder post about calm systems.','posts/quiet-systems-loud-interfaces/'],['First Post','The first example post.','posts/first-post/'],['A Markdown Knowledge Base','Markdown keeps content portable.','posts/knowledge-base/'],['AI-Assisted Publishing','A simple AI publishing workflow.','posts/ai-assisted-publishing/']];const base='/digit/';const q=document.getElementById('q');const r=document.getElementById('results');function draw(){const v=(q.value||'').toLowerCase();const items=posts.filter(p=>(p[0]+' '+p[1]).toLowerCase().includes(v));r.innerHTML=items.map(p=>`<a class="card" href="${base}${p[2]}"><div class="cover"></div><h3>${p[0]}</h3><p>${p[1]}</p></a>`).join('')||'<p>No results.</p>'}q.addEventListener('input',draw);draw();</script></BaseLayout>
