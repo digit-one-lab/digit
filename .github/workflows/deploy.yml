@@ -24,6 +24,47 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm run build
+      - name: Patch mobile Safari rendering
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          css = r"""
+          @media(max-width:820px){
+            html{background:linear-gradient(180deg,#edf5ff 0%,#f7fbff 50%,#eaf8ff 100%)!important}
+            html.dark{background:#021027!important}
+            body{background:#edf5ff!important;background-image:none!important;background-attachment:scroll!important;min-height:100%!important;-webkit-overflow-scrolling:touch!important;overscroll-behavior-y:auto!important}
+            html.dark body{background:#021027!important;background-image:linear-gradient(180deg,#021027 0%,#06204a 100%)!important}
+            .site-header{position:relative!important;top:auto!important;margin:10px 0 0!important;z-index:1!important}
+            .nav{min-height:auto!important;display:grid!important;grid-template-columns:1fr!important;gap:10px!important;padding:12px!important;border-radius:34px!important;background:linear-gradient(145deg,rgba(255,255,255,.86),rgba(238,246,255,.68))!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:0 8px 22px rgba(35,58,95,.12),var(--inner)!important}
+            html.dark .nav{background:linear-gradient(145deg,rgba(9,30,68,.96),rgba(13,49,100,.82))!important;box-shadow:0 8px 24px rgba(0,10,35,.28),var(--inner)!important}
+            .brand{width:max-content!important;font-size:1.05rem!important;padding:8px 13px!important;border-radius:999px!important}
+            .links{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;width:100%!important;gap:5px!important;overflow:visible!important;white-space:normal!important}
+            .links a,.theme{min-width:0!important;text-align:center!important;padding:8px 3px!important;font-size:.76rem!important;line-height:1!important;border-radius:999px!important;background:rgba(255,255,255,.42)!important;border:1px solid rgba(255,255,255,.5)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.46)!important;touch-action:manipulation!important;-webkit-tap-highlight-color:transparent!important}
+            html.dark .links a,html.dark .theme{background:rgba(100,160,255,.14)!important;border-color:rgba(150,200,255,.18)!important}
+            .hero,.posts,.project-grid{grid-template-columns:1fr!important}
+            .hero{padding:38px 0 30px!important;gap:18px!important}
+            .hero h1{font-size:clamp(2.7rem,15vw,4.5rem)!important;letter-spacing:-.08em!important}
+            .section{padding:28px 0!important}
+            .section-head{display:flex!important;margin-bottom:14px!important}
+            .panel,.card,.prose,.search{background:linear-gradient(145deg,rgba(255,255,255,.86),rgba(238,246,255,.7))!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;box-shadow:0 8px 22px rgba(18,38,76,.1),var(--inner)!important;transform:none!important;will-change:auto!important;content-visibility:visible!important}
+            html.dark .panel,html.dark .card,html.dark .prose,html.dark .search{background:linear-gradient(145deg,rgba(10,34,74,.96),rgba(20,64,126,.76))!important;box-shadow:0 10px 26px rgba(0,10,35,.26),var(--inner)!important}
+            .panel,.card{border-radius:30px!important;padding:18px!important}
+            .card:hover{transform:none!important}
+            .cover,.article-cover{background:linear-gradient(135deg,#cfe5ff,#eaf7ff 52%,#d8fff7)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.7)!important}
+            html.dark .cover,html.dark .article-cover{background:linear-gradient(135deg,#0b2b62,#154c95 55%,#0f6f9f)!important}
+            .cover{height:112px!important;border-radius:24px!important}
+            .article-cover{height:170px!important;border-radius:26px!important}
+            .posts,.project-grid{gap:14px!important}
+            .prose{margin-top:24px!important;padding:22px!important;border-radius:30px!important}
+            .prose h1{font-size:clamp(2.4rem,12vw,4rem)!important}
+            .footer{padding:22px 0!important;margin-top:20px!important}
+          }
+          """
+          for p in Path('dist').rglob('*.html'):
+              s = p.read_text()
+              s = s.replace('</style>', css + '</style>')
+              p.write_text(s)
+          PY
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ./dist
