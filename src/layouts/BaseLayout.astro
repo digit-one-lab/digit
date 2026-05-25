@@ -19,9 +19,8 @@ const pageTitle = title === 'Digit' ? title : `${title} · Digit`;
     </script>
   </head>
   <body>
-    <div class="unsplash-bg" aria-hidden="true"></div>
-    <div class="liquid-orb orb-a" aria-hidden="true"></div>
-    <div class="liquid-orb orb-b" aria-hidden="true"></div>
+    <div class="photo-bg photo-bg-a" aria-hidden="true"></div>
+    <div class="photo-bg photo-bg-b" aria-hidden="true"></div>
     <header class="site-header">
       <nav class="shell nav">
         <a class="brand" href={`${import.meta.env.BASE_URL}`}>Digit<span>.</span></a>
@@ -39,15 +38,26 @@ const pageTitle = title === 'Digit' ? title : `${title} · Digit`;
       <div class="shell">© {new Date().getFullYear()} Digit.</div>
     </footer>
     <script is:inline>
-      const collection = '9995415';
-      const bg = document.querySelector('.unsplash-bg');
-      const setUnsplashBackground = () => {
-        const minute = Math.floor(Date.now() / 60000);
-        const url = `https://source.unsplash.com/collection/${collection}/2400x1600?sig=${minute}`;
-        if (bg) bg.style.backgroundImage = `url("${url}"), radial-gradient(circle at 20% 20%, rgba(91,141,255,.28), transparent 34rem), linear-gradient(135deg, #eef3fb, #f9fbff)`;
-      };
-      setUnsplashBackground();
-      setInterval(setUnsplashBackground, 60000);
+      const backgrounds = [
+        'https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=2400&q=85',
+        'https://images.unsplash.com/photo-1557682224-5b8590cd9ec5?auto=format&fit=crop&w=2400&q=85',
+        'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2400&q=85',
+        'https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=2400&q=85'
+      ];
+      let active = 0;
+      const a = document.querySelector('.photo-bg-a');
+      const b = document.querySelector('.photo-bg-b');
+      const setBg = (el, url) => { if (el) el.style.backgroundImage = `url("${url}")`; };
+      setBg(a, backgrounds[0]);
+      setBg(b, backgrounds[1]);
+      if (b) b.style.opacity = '0';
+      setInterval(() => {
+        active = (active + 1) % backgrounds.length;
+        const showB = active % 2 === 1;
+        setBg(showB ? b : a, backgrounds[active]);
+        if (a) a.style.opacity = showB ? '0' : '1';
+        if (b) b.style.opacity = showB ? '1' : '0';
+      }, 60000);
       document.getElementById('theme-toggle')?.addEventListener('click', () => {
         const html = document.documentElement;
         const next = !html.classList.contains('dark');
