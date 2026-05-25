@@ -25,7 +25,6 @@ const pageTitle = title === 'Digit' ? title : `${title} · Digit`;
         <div class="links">
           <a href={`${import.meta.env.BASE_URL}articles/`}>Articles</a>
           <a href={`${import.meta.env.BASE_URL}projects/`}>Projects</a>
-          <a href={`${import.meta.env.BASE_URL}archive/`}>Archive</a>
           <a href={`${import.meta.env.BASE_URL}search/`}>Search</a>
           <a href={`${import.meta.env.BASE_URL}about/`}>About</a>
           <button class="theme" id="theme-toggle" aria-label="Toggle theme">Theme</button>
@@ -34,7 +33,7 @@ const pageTitle = title === 'Digit' ? title : `${title} · Digit`;
     </header>
     <main><slot /></main>
     <footer class="footer">
-      <div class="shell">© {new Date().getFullYear()} Digit. Built with Astro. Static, fast, and ready for AI-assisted publishing.</div>
+      <div class="shell">© {new Date().getFullYear()} Digit.</div>
     </footer>
     <script is:inline>
       document.getElementById('theme-toggle')?.addEventListener('click', () => {
