@@ -1,15 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import PostCard from '../components/PostCard.astro';
-import { getPosts, getProjects, entrySlug } from '../lib/content';
-const posts = await getPosts();
-const latestPosts = posts.slice(0, 6);
-const projects = (await getProjects()).slice(0, 1);
-const fallbackPosts = [
-  { title: 'Liquid Glass Notes', description: 'A placeholder post exploring translucent interfaces, depth, motion, and modern publishing surfaces.', date: 'May 22, 2026', url: 'liquid-glass-notes' },
-  { title: 'Field Notes from a Digital Garden', description: 'A placeholder post about collecting small ideas and turning them into a living knowledge system.', date: 'May 21, 2026', url: 'field-notes-from-a-digital-garden' },
-  { title: 'Quiet Systems, Loud Interfaces', description: 'A placeholder post about designing systems that stay calm while the interface remains memorable.', date: 'May 20, 2026', url: 'quiet-systems-loud-interfaces' }
-];
 ---
 <BaseLayout>
   <section class="shell hero">
@@ -20,36 +10,20 @@ const fallbackPosts = [
     </div>
     <aside class="panel">
       <strong>Publishing workflow</strong>
-      <p>Drop a Markdown or MDX file into <code>src/content/posts</code>, fill the frontmatter, commit, and GitHub Pages deploys the site.</p>
+      <p>Write posts, publish projects, and keep everything fast on GitHub Pages.</p>
       <a class="button" href={`${import.meta.env.BASE_URL}posts/`}>Read posts</a>
     </aside>
   </section>
   <section class="shell section">
     <div class="section-head"><h2>Latest posts</h2><a class="tag" href={`${import.meta.env.BASE_URL}posts/`}>All posts</a></div>
-    {latestPosts.length > 0 ? (
-      <div class="grid posts">{latestPosts.map((post) => <PostCard post={post} />)}</div>
-    ) : (
-      <div class="grid posts">
-        {fallbackPosts.map((post) => (
-          <a class="card" href={`${import.meta.env.BASE_URL}posts/${post.url}/`}>
-            <div class="cover"></div>
-            <div class="meta"><span>{post.date}</span><span>·</span><span>2 min read</span></div>
-            <h3>{post.title}</h3>
-            <p>{post.description}</p>
-            <div class="meta"><span class="tag">Placeholder</span><span class="tag">Design</span></div>
-          </a>
-        ))}
-      </div>
-    )}
-  </section>
-  <section class="shell section">
-    <div class="panel newsletter">
-      <div><h2>Newsletter placeholder</h2><p class="lead">No backend is connected. Replace this with your future email provider when needed.</p></div>
-      <form><input placeholder="email@example.com" /><button type="button">Notify me</button></form>
+    <div class="grid posts">
+      <a class="card" href={`${import.meta.env.BASE_URL}posts/liquid-glass-notes/`}><div class="cover"></div><div class="meta"><span>May 22, 2026</span><span>·</span><span>2 min read</span></div><h3>Liquid Glass Notes</h3><p>A placeholder post exploring translucent interfaces, depth, motion, and modern publishing surfaces.</p><div class="meta"><span class="tag">Design</span><span class="tag">Liquid Glass</span></div></a>
+      <a class="card" href={`${import.meta.env.BASE_URL}posts/field-notes-from-a-digital-garden/`}><div class="cover"></div><div class="meta"><span>May 21, 2026</span><span>·</span><span>2 min read</span></div><h3>Field Notes from a Digital Garden</h3><p>A placeholder post about collecting small ideas and turning them into a living knowledge system.</p><div class="meta"><span class="tag">Writing</span><span class="tag">Publishing</span></div></a>
+      <a class="card" href={`${import.meta.env.BASE_URL}posts/quiet-systems-loud-interfaces/`}><div class="cover"></div><div class="meta"><span>May 20, 2026</span><span>·</span><span>2 min read</span></div><h3>Quiet Systems, Loud Interfaces</h3><p>A placeholder post about designing systems that stay calm while the interface remains memorable.</p><div class="meta"><span class="tag">Systems</span><span class="tag">Interface</span></div></a>
     </div>
   </section>
   <section class="shell section">
     <div class="section-head"><h2>Project spotlight</h2><a class="tag" href={`${import.meta.env.BASE_URL}projects/`}>Projects</a></div>
-    {projects.map((project) => <a class="card" href={`${import.meta.env.BASE_URL}projects/${entrySlug(project)}/`}><div class="cover"></div><div class="meta"><span>{project.data.status}</span></div><h3>{project.data.title}</h3><p>{project.data.description}</p></a>)}
+    <a class="card" href={`${import.meta.env.BASE_URL}projects/personal-publishing-platform/`}><div class="cover"></div><div class="meta"><span>active</span></div><h3>Personal Publishing Platform</h3><p>A static Astro publication platform for posts, projects, search, RSS, and GitHub Pages deployment.</p></a>
   </section>
 </BaseLayout>
