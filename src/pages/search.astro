@@ -1,0 +1,22 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout title="Search" description="Search posts by title, summary, tag, or category.">
+  <section class="shell section">
+    <div class="section-head"><h2>Search</h2><p>Static client-side search</p></div>
+    <input class="search" id="q" placeholder="Search articles, tags, categories..." />
+    <div class="grid" id="results" style="margin-top:22px"></div>
+  </section>
+  <script>
+    const input = document.getElementById('q') as HTMLInputElement;
+    const results = document.getElementById('results')!;
+    let data: any[] = [];
+    fetch(`${import.meta.env.BASE_URL}search-index.json`).then((r) => r.json()).then((json) => { data = json; render(''); });
+    function render(query: string) {
+      const q = query.toLowerCase();
+      const items = data.filter((item) => !q || [item.title, item.description, item.category, ...(item.tags || [])].join(' ').toLowerCase().includes(q));
+      results.innerHTML = items.map((item) => `<a class="card" href="${item.url}"><div class="meta"><span>${item.category}</span></div><h3>${item.title}</h3><p>${item.description}</p></a>`).join('') || '<p>No results.</p>';
+    }
+    input?.addEventListener('input', () => render(input.value));
+  </script>
+</BaseLayout>
